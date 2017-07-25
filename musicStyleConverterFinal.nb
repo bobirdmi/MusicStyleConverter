@@ -1,0 +1,695 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     31653,        686]
+NotebookOptionsPosition[     31367,        672]
+NotebookOutlinePosition[     31712,        687]
+CellTagsIndexPosition[     31669,        684]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"musicStyleConverter", "[", "importFile_String", "]"}], ":=", 
+   RowBox[{"Module", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "musicInstruments", ",", "dataMusicInstruments", ",", "dataMusicEvents",
+        ",", "percMusicEvents", ",", "notes", ",", "importNotes", ",", 
+       "importFilename", ",", "instrumentTypes", ",", "percTypes", ",", 
+       "instrPositionList", ",", "percPositionList", ",", "genNamesForInstr", 
+       ",", "genNamesForPerc", ",", "instrControls", ",", "percControls", ",",
+        "newInstr", ",", "newInstr1", ",", "newInstr2", ",", "newInstr3", ",",
+        "newInstr4", ",", "newInstr5", ",", "newInstr6", ",", "newInstr7", 
+       ",", "newInstr8", ",", "newInstr9", ",", "newInstr10", ",", 
+       "newInstr11", ",", "newInstr12", ",", "newInstr13", ",", "newInstr14", 
+       ",", "newInstr15", ",", "newInstr16", ",", "newInstr17", ",", 
+       "newInstr18", ",", "newInstr19", ",", "newInstr20", ",", "newInstr21", 
+       ",", "newInstr22", ",", "newInstr23", ",", "newInstr24", ",", 
+       "newInstr25", ",", "newInstr26", ",", "newInstr27", ",", "newInstr28", 
+       ",", "newInstr29", ",", "newInstr30", ",", "newInstr31", ",", 
+       "newInstr32", ",", "newInstr33", ",", "newInstr34", ",", "newInstr35", 
+       ",", "newInstr36", ",", "newInstr37", ",", "newInstr38", ",", 
+       "newInstr39", ",", "newInstr40", ",", "newPerc", ",", "newPerc1", ",", 
+       "newPerc2", ",", "newPerc3", ",", "newPerc4", ",", "newPerc5", ",", 
+       "newPerc6", ",", "newPerc7", ",", "newPerc8", ",", "newPerc9", ",", 
+       "newPerc10", ",", "newPerc11", ",", "newPerc12", ",", "newPerc13", ",",
+        "newPerc14", ",", "newPerc15", ",", "newPerc16", ",", "newPerc17", 
+       ",", "newPerc18", ",", "newPerc19", ",", "newPerc20", ",", "newPerc21",
+        ",", "newPerc22", ",", "newPerc23", ",", "newPerc24", ",", 
+       "newPerc25", ",", "newPerc26", ",", "newPerc27", ",", "newPerc28", ",",
+        "newPerc29", ",", "newPerc30", ",", "newPerc31", ",", "newPerc32", 
+       ",", "newPerc33", ",", "newPerc34", ",", "newPerc35", ",", "newPerc36",
+        ",", "newPerc37", ",", "newPerc38", ",", "newPerc39", ",", 
+       "newPerc40"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"ClearAll", "[", "\"\<Global`\>\"", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"SetDirectory", "[", 
+       RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", 
+       RowBox[{
+       "musicInstruments", ",", "dataMusicInstruments", ",", 
+        "dataMusicEvents", ",", "percMusicEvents"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"dataMusicInstruments", "=", 
+       RowBox[{"{", GridBox[{
+          {"\"\<Accordion\>\"", "\"\<Agogo\>\"", "\"\<AltoSax\>\"", 
+           "\"\<Applause\>\""},
+          {"\"\<Atmosphere\>\"", "\"\<Bagpipe\>\"", "\"\<Bandoneon\>\"", 
+           "\"\<Banjo\>\""},
+          {"\"\<BaritoneSax\>\"", "\"\<Bass\>\"", "\"\<BassAndLead\>\"", 
+           "\"\<Bassoon\>\""},
+          {"\"\<Bird\>\"", "\"\<BlownBottle\>\"", "\"\<Bowed\>\"", 
+           "\"\<BrassSection\>\""},
+          {"\"\<Breath\>\"", "\"\<Brightness\>\"", "\"\<BrightPiano\>\"", 
+           "\"\<Calliope\>\""},
+          {"\"\<Celesta\>\"", "\"\<Cello\>\"", "\"\<Charang\>\"", 
+           "\"\<Chiff\>\""},
+          {"\"\<Choir\>\"", "\"\<Clarinet\>\"", "\"\<Clavi\>\"", 
+           "\"\<Contrabass\>\""},
+          {"\"\<Crystal\>\"", "\"\<DrawbarOrgan\>\"", "\"\<Dulcimer\>\"", 
+           "\"\<Echoes\>\""},
+          {"\"\<ElectricBass\>\"", "\"\<ElectricGrandPiano\>\"", 
+           "\"\<ElectricGuitar\>\"", "\"\<ElectricPiano\>\""},
+          {"\"\<ElectricPiano2\>\"", "\"\<EnglishHorn\>\"", "\"\<Fiddle\>\"", 
+           "\"\<Fifths\>\""},
+          {"\"\<Flute\>\"", "\"\<FrenchHorn\>\"", "\"\<FretlessBass\>\"", 
+           "\"\<FretNoise\>\""},
+          {"\"\<Glockenspiel\>\"", "\"\<Goblins\>\"", "\"\<Guitar\>\"", 
+           "\"\<GuitarDistorted\>\""},
+          {"\"\<GuitarHarmonics\>\"", "\"\<GuitarMuted\>\"", 
+           "\"\<GuitarOverdriven\>\"", "\"\<Gunshot\>\""},
+          {"\"\<Halo\>\"", "\"\<Harmonica\>\"", "\"\<Harp\>\"", 
+           "\"\<Harpsichord\>\""},
+          {"\"\<Helicopter\>\"", "\"\<HonkyTonkPiano\>\"", 
+           "\"\<JazzGuitar\>\"", "\"\<Kalimba\>\""},
+          {"\"\<Koto\>\"", "\"\<Marimba\>\"", "\"\<MelodicTom\>\"", 
+           "\"\<Metallic\>\""},
+          {"\"\<MusicBox\>\"", "\"\<MutedTrumpet\>\"", "\"\<NewAge\>\"", 
+           "\"\<Oboe\>\""},
+          {"\"\<Ocarina\>\"", "\"\<OrchestraHit\>\"", "\"\<Organ\>\"", 
+           "\"\<PanFlute\>\""},
+          {"\"\<PercussiveOrgan\>\"", "\"\<Piano\>\"", "\"\<Piccolo\>\"", 
+           "\"\<PickedBass\>\""},
+          {"\"\<PizzicatoStrings\>\"", "\"\<Polysynth\>\"", "\"\<Rain\>\"", 
+           "\"\<Recorder\>\""},
+          {"\"\<ReedOrgan\>\"", "\"\<ReverseCymbal\>\"", "\"\<RockOrgan\>\"", 
+           "\"\<Sawtooth\>\""},
+          {"\"\<SciFi\>\"", "\"\<Seashore\>\"", "\"\<Shakuhachi\>\"", 
+           "\"\<Shamisen\>\""},
+          {"\"\<Shanai\>\"", "\"\<Sitar\>\"", "\"\<SlapBass\>\"", 
+           "\"\<SlapBass2\>\""},
+          {"\"\<SopranoSax\>\"", "\"\<Soundtrack\>\"", "\"\<Square\>\"", 
+           "\"\<Steeldrums\>\""},
+          {"\"\<SteelGuitar\>\"", "\"\<Strings\>\"", "\"\<Strings2\>\"", 
+           "\"\<Sweep\>\""},
+          {"\"\<SynthBass\>\"", "\"\<SynthBass2\>\"", "\"\<SynthBrass\>\"", 
+           "\"\<SynthBrass2\>\""},
+          {"\"\<SynthDrum\>\"", "\"\<SynthStrings\>\"", 
+           "\"\<SynthStrings2\>\"", "\"\<SynthVoice\>\""},
+          {"\"\<Taiko\>\"", "\"\<Telephone\>\"", "\"\<TenorSax\>\"", 
+           "\"\<Timpani\>\""},
+          {"\"\<Tinklebell\>\"", "\"\<TremoloStrings\>\"", 
+           "\"\<Trombone\>\"", "\"\<Trumpet\>\""},
+          {"\"\<Tuba\>\"", "\"\<TubularBells\>\"", "\"\<Vibraphone\>\"", 
+           "\"\<Viola\>\""},
+          {"\"\<Violin\>\"", "\"\<Voice\>\"", "\"\<VoiceAahs\>\"", 
+           "\"\<VoiceOohs\>\""},
+          {"\"\<Warm\>\"", "\"\<Whistle\>\"", "\"\<Woodblock\>\"", 
+           "\"\<Xylophone\>\""}
+         },
+         GridBoxAlignment->{
+          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}}], "}"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"dataMusicEvents", "=", 
+       RowBox[{"{", GridBox[{
+          {"\"\<BassDrum\>\"", "\"\<BassDrum2\>\"", "\"\<BellTree\>\"", 
+           "\"\<Cabasa\>\""},
+          {"\"\<Castanets\>\"", "\"\<ChineseCymbal\>\"", "\"\<Clap\>\"", 
+           "\"\<Claves\>\""},
+          {"\"\<Cowbell\>\"", "\"\<CrashCymbal\>\"", "\"\<CrashCymbal2\>\"", 
+           "\"\<ElectricSnare\>\""},
+          {"\"\<GuiroLong\>\"", "\"\<GuiroShort\>\"", "\"\<HighAgogo\>\"", 
+           "\"\<HighBongo\>\""},
+          {"\"\<HighCongaMute\>\"", "\"\<HighCongaOpen\>\"", 
+           "\"\<HighFloorTom\>\"", "\"\<HighTimbale\>\""},
+          {"\"\<HighTom\>\"", "\"\<HighWoodblock\>\"", "\"\<HiHatClosed\>\"", 
+           "\"\<HiHatOpen\>\""},
+          {"\"\<HiHatPedal\>\"", "\"\<JingleBell\>\"", "\"\<LowAgogo\>\"", 
+           "\"\<LowBongo\>\""},
+          {"\"\<LowConga\>\"", "\"\<LowFloorTom\>\"", "\"\<LowTimbale\>\"", 
+           "\"\<LowTom\>\""},
+          {"\"\<LowWoodblock\>\"", "\"\<Maracas\>\"", 
+           "\"\<MetronomeBell\>\"", "\"\<MetronomeClick\>\""},
+          {"\"\<MidTom\>\"", "\"\<MidTom2\>\"", "\"\<MuteCuica\>\"", 
+           "\"\<MuteSurdo\>\""},
+          {"\"\<MuteTriangle\>\"", "\"\<OpenCuica\>\"", "\"\<OpenSurdo\>\"", 
+           "\"\<OpenTriangle\>\""},
+          {"\"\<RideBell\>\"", "\"\<RideCymbal\>\"", "\"\<RideCymbal2\>\"", 
+           "\"\<ScratchPull\>\""},
+          {"\"\<ScratchPush\>\"", "\"\<Shaker\>\"", "\"\<SideStick\>\"", 
+           "\"\<Slap\>\""},
+          {"\"\<Snare\>\"", "\"\<SplashCymbal\>\"", "\"\<SquareClick\>\"", 
+           "\"\<Sticks\>\""},
+          {"\"\<Tambourine\>\"", "\"\<Vibraslap\>\"", "\"\<WhistleLong\>\"", 
+           "\"\<WhistleShort\>\""}
+         },
+         GridBoxAlignment->{
+          "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, 
+           "Rows" -> {{Baseline}}, "RowsIndexed" -> {}}], "}"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"musicInstruments", "=", 
+       RowBox[{"Flatten", "@", 
+        RowBox[{"dataMusicInstruments", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"percMusicEvents", "=", 
+       RowBox[{"Flatten", "@", 
+        RowBox[{"dataMusicEvents", "[", 
+         RowBox[{"[", "1", "]"}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", "doImport", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"doImport", "[", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ClearAll", "[", 
+           RowBox[{"notes", ",", "importNotes", ",", "importFilename"}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"InputForm", "[", 
+             RowBox[{"Import", "[", "importFile", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}],
+       ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"import", " ", "a", " ", "new", " ", "music", " ", "file", " ", 
+        RowBox[{"in", " ", ".", "mid"}], " ", "format"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"get", " ", "only", " ", "notes", " ", 
+        RowBox[{"(", 
+         RowBox[{"SoundNote", " ", "object", " ", "list"}], ")"}]}], " ", 
+       "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"notes", "=", 
+       RowBox[{"doImport", "[", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"save", " ", "unchanged", " ", "notes"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"importNotes", "=", "notes"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"get", " ", "filename"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"importFilename", "=", 
+       RowBox[{
+        RowBox[{"StringSplit", "[", 
+         RowBox[{"importFile", ",", "\"\<.\>\""}], "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", 
+       RowBox[{"instrumentTypes", ",", "percTypes"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"getInstTypes", "[", "note_", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", 
+             RowBox[{"note", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "]"}], "<", "4"}], ",", 
+           RowBox[{"note", "[", 
+            RowBox[{"[", "3", "]"}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"getPercTypes", "[", "note_", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"StringLength", "[", 
+             RowBox[{"note", "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "]"}], ">=", "4"}], ",", 
+           RowBox[{"note", "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], "\[IndentingNewLine]", 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "get", " ", "all", " ", "instrument", " ", "styles", " ", "and", " ", 
+        "percussion", " ", "events"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"instrumentTypes", "=", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"Union", "[", 
+          RowBox[{"getInstTypes", "/@", "notes"}], "]"}], ",", "Null"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"percTypes", "=", 
+       RowBox[{"DeleteCases", "[", 
+        RowBox[{
+         RowBox[{"Union", "[", 
+          RowBox[{"getPercTypes", "/@", "notes"}], "]"}], ",", "Null"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", 
+       RowBox[{"getInstrPosition", ",", "getPercPosition"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"getInstrPosition", "[", "instr_String", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", "positions", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"positions", "=", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StringLength", "[", 
+                  RowBox[{
+                   RowBox[{"notes", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "]"}], "<", "4"}], "&&", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"notes", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}], "[", 
+                  RowBox[{"[", "3", "]"}], "]"}], "\[Equal]", "instr"}]}], 
+               ",", "i"}], "]"}], "\[IndentingNewLine]", ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"Length", "[", "notes", "]"}]}], "}"}]}], 
+            "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{"positions", ",", "Null"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"getPercPosition", "[", "perc_String", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", "positions", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"positions", "=", 
+           RowBox[{"Table", "[", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"If", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"StringLength", "[", 
+                  RowBox[{
+                   RowBox[{"notes", "[", 
+                    RowBox[{"[", "i", "]"}], "]"}], "[", 
+                   RowBox[{"[", "1", "]"}], "]"}], "]"}], ">=", "4"}], "&&", 
+                RowBox[{
+                 RowBox[{
+                  RowBox[{"notes", "[", 
+                   RowBox[{"[", "i", "]"}], "]"}], "[", 
+                  RowBox[{"[", "1", "]"}], "]"}], "\[Equal]", "perc"}]}], ",",
+                "i"}], "]"}], "\[IndentingNewLine]", ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"Length", "[", "notes", "]"}]}], "}"}]}], 
+            "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{"positions", ",", "Null"}], "]"}]}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", 
+       RowBox[{"instrPositionList", ",", "percPositionList"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "find", " ", "all", " ", "positions", " ", "in", " ", "list", " ", 
+        "of", " ", "SoundNotes", " ", "with", " ", "appropriate", " ", 
+        "instrument", " ", "style", " ", "\[IndentingNewLine]", "and", " ", 
+        "then", " ", "with", " ", "percussion", " ", "event"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"instrPositionList", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"getInstrPosition", "[", "#", "]"}], "&"}], "/@", 
+        "instrumentTypes"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"percPositionList", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"getPercPosition", "[", "#", "]"}], "&"}], "/@", 
+        "percTypes"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", "createControl", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+        RowBox[{
+        "function", " ", "to", " ", "create", " ", "controls", " ", "with", 
+         " ", "given", " ", "assossiated", " ", "variable", " ", "name"}], 
+        ",", " ", 
+        RowBox[{
+        "its", " ", "start", " ", "value", " ", "\[IndentingNewLine]", "and", 
+         " ", "list", " ", "of", " ", "possible", " ", "music", " ", "events",
+          " ", 
+         RowBox[{"(", 
+          RowBox[{"instrument", " ", "or", " ", "percussion"}], ")"}]}]}], 
+       " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"SetAttributes", "[", 
+       RowBox[{"createControl", ",", "HoldAll"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"createControl", "[", 
+        RowBox[{"instr_", ",", "name_", ",", "instrList_"}], "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"str", ",", "newVar"}], "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"str", "=", 
+           RowBox[{"ToString", "[", "instr", "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"name", "=", "instr"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Control", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"name", ",", "str", ",", 
+               RowBox[{"str", "<>", "\"\< ->\>\""}]}], "}"}], ",", 
+             "instrList"}], "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", "clearInstrAndPercs", "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"clearInstrAndPercs", "[", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"ClearAll", "[", 
+           RowBox[{
+           "newInstr", ",", "newInstr1", ",", "newInstr2", ",", "newInstr3", 
+            ",", "newInstr4", ",", "newInstr5", ",", "newInstr6", ",", 
+            "newInstr7", ",", "newInstr8", ",", "newInstr9", ",", 
+            "newInstr10", ",", "newInstr11", ",", "newInstr12", ",", 
+            "newInstr13", ",", "newInstr14", ",", "newInstr15", ",", 
+            "newInstr16", ",", "newInstr17", ",", "newInstr18", ",", 
+            "newInstr19", ",", "newInstr20", ",", "newInstr21", ",", 
+            "newInstr22", ",", "newInstr23", ",", "newInstr24", ",", 
+            "newInstr25", ",", "newInstr26", ",", "newInstr27", ",", 
+            "newInstr28", ",", "newInstr29", ",", "newInstr30", ",", 
+            "newInstr31", ",", "newInstr32", ",", "newInstr33", ",", 
+            "newInstr34", ",", "newInstr35", ",", "newInstr36", ",", 
+            "newInstr37", ",", "newInstr38", ",", "newInstr39", ",", 
+            "newInstr40"}], "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"ClearAll", "[", 
+           RowBox[{
+           "newPerc", ",", "newPerc1", ",", "newPerc2", ",", "newPerc3", ",", 
+            "newPerc4", ",", "newPerc5", ",", "newPerc6", ",", "newPerc7", 
+            ",", "newPerc8", ",", "newPerc9", ",", "newPerc10", ",", 
+            "newPerc11", ",", "newPerc12", ",", "newPerc13", ",", "newPerc14",
+             ",", "newPerc15", ",", "newPerc16", ",", "newPerc17", ",", 
+            "newPerc18", ",", "newPerc19", ",", "newPerc20", ",", "newPerc21",
+             ",", "newPerc22", ",", "newPerc23", ",", "newPerc24", ",", 
+            "newPerc25", ",", "newPerc26", ",", "newPerc27", ",", "newPerc28",
+             ",", "newPerc29", ",", "newPerc30", ",", "newPerc31", ",", 
+            "newPerc32", ",", "newPerc33", ",", "newPerc34", ",", "newPerc35",
+             ",", "newPerc36", ",", "newPerc37", ",", "newPerc38", ",", 
+            "newPerc39", ",", "newPerc40"}], "]"}], ";"}]}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", 
+       RowBox[{
+       "genNamesForInstr", ",", "genNamesForPerc", ",", "instrControls", ",", 
+        "percControls"}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"clearInstrAndPercs", "[", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "generate", " ", "variable", " ", "name", " ", "for", " ", "every", 
+        " ", "instrument", " ", "style", " ", "and", " ", "percussion", " ", 
+        "event"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"genNamesForInstr", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"ToExpression", "[", 
+          RowBox[{
+           RowBox[{"ToString", "[", "newInstr", "]"}], "<>", 
+           RowBox[{"ToString", "[", "i", "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "instrumentTypes", "]"}]}], "}"}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"genNamesForPerc", "=", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"ToExpression", "[", 
+          RowBox[{
+           RowBox[{"ToString", "[", "newPerc", "]"}], "<>", 
+           RowBox[{"ToString", "[", "i", "]"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "percTypes", "]"}]}], "}"}]}], "]"}]}], ";",
+       "\[IndentingNewLine]", 
+      RowBox[{"instrControls", "=", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"createControl", "[", 
+           RowBox[{"#1", ",", "#2", ",", "musicInstruments"}], "]"}], "&"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"instrumentTypes", ",", "genNamesForInstr"}], "}"}]}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"percControls", "=", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"createControl", "[", 
+           RowBox[{"#1", ",", "#2", ",", "percMusicEvents"}], "]"}], "&"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{"percTypes", ",", "genNamesForPerc"}], "}"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"ClearAll", "[", 
+       RowBox[{"updateNotes", ",", "replaceInstr", ",", "replacePerc"}], 
+       "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "replace", " ", "instrument", " ", "styles", " ", "with", " ", "a", 
+        " ", "new", " ", "one"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"replaceInstr", "[", 
+        RowBox[{
+        "instr_String", ",", "position_Integer", ",", "notesToChange_List"}], 
+        "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"positionList", ",", "newNotes"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"newNotes", "=", "notesToChange"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"positionList", "=", 
+           RowBox[{"instrPositionList", "[", 
+            RowBox[{"[", "position", "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"newNotes", "[", 
+               RowBox[{"[", 
+                RowBox[{"positionList", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "[", 
+              RowBox[{"[", "3", "]"}], "]"}], "=", "instr"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "1", ",", 
+              RowBox[{"Length", "[", "positionList", "]"}]}], "}"}]}], "]"}], 
+          ";", "\[IndentingNewLine]", "newNotes"}]}], "\[IndentingNewLine]", 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "replace", " ", "percussion", " ", "events", " ", "with", " ", "a", 
+        " ", "new", " ", "one"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"replacePerc", "[", 
+        RowBox[{
+        "perc_String", ",", "position_Integer", ",", "notesToChange_List"}], 
+        "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"positionList", ",", "newNotes"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"newNotes", "=", "notesToChange"}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"positionList", "=", 
+           RowBox[{"percPositionList", "[", 
+            RowBox[{"[", "position", "]"}], "]"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{"newNotes", "[", 
+               RowBox[{"[", 
+                RowBox[{"positionList", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], "]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "=", "perc"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "1", ",", 
+              RowBox[{"Length", "[", "positionList", "]"}]}], "}"}]}], "]"}], 
+          ";", "\[IndentingNewLine]", "newNotes"}]}], "\[IndentingNewLine]", 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{
+       "return", " ", "notes", " ", "with", " ", "changed", " ", "music", " ",
+         "events"}], " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"updateNotes", "[", "]"}], ":=", 
+       RowBox[{"Module", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"resNotes", ",", "instruments", ",", "percs"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"resNotes", "=", "notes"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"instruments", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"ToExpression", "[", 
+              RowBox[{
+               RowBox[{"ToString", "[", "newInstr", "]"}], "<>", 
+               RowBox[{"ToString", "[", "i", "]"}]}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"Length", "[", "instrumentTypes", "]"}]}], "}"}]}], 
+            "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"percs", "=", 
+           RowBox[{"Table", "[", 
+            RowBox[{
+             RowBox[{"ToExpression", "[", 
+              RowBox[{
+               RowBox[{"ToString", "[", "newPerc", "]"}], "<>", 
+               RowBox[{"ToString", "[", "i", "]"}]}], "]"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"i", ",", "1", ",", 
+               RowBox[{"Length", "[", "percTypes", "]"}]}], "}"}]}], "]"}]}], 
+          ";", "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"resNotes", "=", 
+             RowBox[{"replaceInstr", "[", 
+              RowBox[{
+               RowBox[{"instruments", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], ",", "i", ",", "resNotes"}], 
+              "]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "1", ",", 
+              RowBox[{"Length", "[", "instrumentTypes", "]"}]}], "}"}]}], 
+           "]"}], ";", "\[IndentingNewLine]", 
+          RowBox[{"Table", "[", 
+           RowBox[{
+            RowBox[{"resNotes", "=", 
+             RowBox[{"replacePerc", "[", 
+              RowBox[{
+               RowBox[{"percs", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], ",", "i", ",", "resNotes"}], 
+              "]"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"i", ",", "1", ",", 
+              RowBox[{"Length", "[", "percTypes", "]"}]}], "}"}]}], "]"}], 
+          ";", "\[IndentingNewLine]", "resNotes"}]}], "\[IndentingNewLine]", 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", 
+       RowBox[{"automatic", " ", "update"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Dynamic", "[", "notes", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", " ", "Result", " ", "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"Manipulate", "[", 
+       RowBox[{
+        RowBox[{"Sound", "[", "notes", "]"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"TabView", "[", 
+         RowBox[{"{", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"\"\<Change instruments\>\"", "\[Rule]", 
+            RowBox[{"TableForm", "@", "instrControls"}]}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"\"\<Change percussions\>\"", "\[Rule]", 
+            RowBox[{"TableForm", "@", "percControls"}]}]}], 
+          "\[IndentingNewLine]", "}"}], "]"}], ",", 
+        RowBox[{"Button", "[", 
+         RowBox[{"\"\<Update note\>\"", ",", 
+          RowBox[{"notes", "=", 
+           RowBox[{"updateNotes", "[", "]"}]}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Button", "[", 
+         RowBox[{"\"\<Set to unchanged notes\>\"", ",", 
+          RowBox[{"notes", "=", "importNotes"}]}], "]"}], ",", 
+        RowBox[{"Button", "[", 
+         RowBox[{"\"\<Export\>\"", ",", 
+          RowBox[{"Export", "[", 
+           RowBox[{
+            RowBox[{"importFilename", "<>", "\"\<_EXPORT.mid\>\""}], ",", 
+            RowBox[{"Sound", "[", "notes", "]"}]}], "]"}]}], "]"}], ",", 
+        RowBox[{"SynchronousUpdating", "\[Rule]", "False"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQB2IQzdS0xVT39CtHAWc3RxBtUdPkBqIDv7clgOg5+SfS
+QXTCaoVKEK20170ORM+3zQLTZmeWNoFozUDRFrC8rMYqED1FQx9Mt9YVd+kB
+6TvLJ/eB6HpZrSkguuhjPJiOWHlgH4jWU2XaD6J1mZSOgmiRX7XnQPQENonX
+IPrgh5PfQXTx3gMG+kD669WttiA63C7PE0S3Rzf7gui9FgIhIDqm4mwUiBaV
+fpoGojWiJ6SDaJtVXznMgfSZW4GcIDpMzl0QRKtMXSEJoo98z5AF0RM2zAbT
+co/81EH0PRNPfRD9yzTWHETP2LnZFURvusTgDab5nXxA9GPZ80Eg2vX1mTAQ
+Xe/HMAtszjfDOSAaAOdKtqo=
+  "]],
+
+Cell[BoxData[
+ RowBox[{"musicStyleConverter", "[", "\"\<Phantom_Of_The_Opera.mid\>\"", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.5961846365426235`*^9, 3.596184653965434*^9}, 
+   3.596184980469452*^9, 3.596185210121848*^9, 3.596185417209177*^9, 
+   3.5961855412780485`*^9, 3.5961858768031626`*^9, 3.596186197836694*^9, 
+   3.596186924808273*^9}]
+},
+WindowSize->{1047, 689},
+WindowMargins->{{68, Automatic}, {0, Automatic}},
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 30459, 642, 3727, "Input"],
+Cell[31019, 664, 344, 6, 31, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
